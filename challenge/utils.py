@@ -223,7 +223,7 @@ def save_the_pipe(pipeline, path=None):
     pipeline : sklearn.pipeline.Pipeline
         The preprocessing pipeline to save
     path : str, optional
-        The path where to save the pipeline. If None, defaults to 'model/pipeline.pickle'
+        The path where to save the pipeline. If None, defaults to 'model/pipeline.joblib'
         in the project root directory
         
     Returns:
@@ -255,7 +255,7 @@ def load_the_pipe(path=None):
     Parameters:
     -----------
     path : str, optional
-        The path to the saved pipeline. If None, defaults to 'model/pipeline.pickle'
+        The path to the saved pipeline. If None, defaults to 'model/pipeline.joblib'
         in the project root directory
         
     Returns:
@@ -269,10 +269,9 @@ def load_the_pipe(path=None):
         current_dir = os.path.dirname(os.path.abspath(__file__))
         # Go up one level to project root and into model directory
         project_root = os.path.dirname(current_dir)
-        path = os.path.join(project_root, 'model', 'pipeline.pickle')
+        path = os.path.join(project_root, 'model', 'pipeline.joblib')
     
     # Load and return the pipeline
-
     return joblib.load(path)
 
 
