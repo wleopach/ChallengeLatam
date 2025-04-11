@@ -87,3 +87,8 @@ and then read the data using:
 ```python
 self.data = pd.read_csv(filepath_or_buffer=f"{DATA_PATH}")
 ```
+
+# Part II
+
+In order to deploy the model using fastapi I created a [`schemas`](../challenge/schemas.py) file to define the 
+response and requests models
