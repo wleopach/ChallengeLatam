@@ -88,7 +88,27 @@ and then read the data using:
 self.data = pd.read_csv(filepath_or_buffer=f"{DATA_PATH}")
 ```
 
-# Part II
+# Part II 🧨
 
 In order to deploy the model using fastapi I created a [`schemas`](../challenge/schemas.py) file to define the 
-response and requests models
+response and requests models. I updated the predict endpoint in [`api`](../challenge/api.py). 
+The first time that I ran
+```bash
+ make api-test
+```
+I got the following errors:
+```bash
+=================================================================================================== short test summary info ===================================================================================================
+FAILED tests/api/test_api.py::TestBatchPipeline::test_should_failed_unkown_column_1 - AttributeError: module 'anyio' has no attribute 'start_blocking_portal'
+FAILED tests/api/test_api.py::TestBatchPipeline::test_should_failed_unkown_column_2 - AttributeError: module 'anyio' has no attribute 'start_blocking_portal'
+FAILED tests/api/test_api.py::TestBatchPipeline::test_should_failed_unkown_column_3 - AttributeError: module 'anyio' has no attribute 'start_blocking_portal'
+FAILED tests/api/test_api.py::TestBatchPipeline::test_should_get_predict - AttributeError: module 'anyio' has no attribute 'start_blocking_portal'
+
+```
+After doing some research I found that the issue could be solved by doing an update of the fastapi, startlette and
+anyo versions. I did
+
+```bash
+pip install --upgrade fastapi starlette anyio
+```
+After this all 4 tests passed.
