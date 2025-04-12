@@ -1,45 +1,22 @@
-# Use a base image with Python 3.10
+# Use an official Python runtime as the base image
 FROM python:3.10-slim
 
-# Set work directory inside the container
+# Set the working directory in the container
 WORKDIR /app
 
-# System dependencies for building packages like numpy
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    make \
-    git \
-    && rm -rf /var/lib/apt/lists/*
+# Copy the requirements file into the container
+COPY requirements.txt .
 
-# Copy the rest of the code
-COPY . .
+# Install Python dependencies
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Run Makefile targets to set up the virtual environment and install dependencies
-RUN make venv && \
-    . .venv/bin/activate && \
-    make install
-# Set the environment to use the virtual environment
-ENV PATH="/app/.venv/bin:$PATH"
-ENV VIRTUAL_ENV="/app/.venv"
+# Copy the challenge and data directories into the container
+COPY challenge /app/challenge
+COPY data /app/data
+COPY model /app/model
 
-# Install Jupyter and essential packages
-RUN pip install --no-cache-dir \
-    jupyter \
-    jupyterlab \
-    ipykernel \
-    notebook \
-    pandas \
-    numpy \
-    matplotlib
+# Expose the port that FastAPI will run on
+EXPOSE 8000
 
-# Register the kernel with Jupyter
-RUN python -m ipykernel install --user --name=python3
-
-# Set up environment variables for proper PyCharm integration
-ENV PYTHONUNBUFFERED=1
-
-# Expose the Jupyter port
-EXPOSE 8888
-
-# Default command (interactive shell)
-CMD ["/bin/bash"]
+# Command to run the FastAPI application using Uvicorn
+CMD ["uvicorn", "challenge.api:app", "--host", "0.0.0.0", "--port", "8080"]

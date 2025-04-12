@@ -1,7 +1,5 @@
 import fastapi
 import pandas as pd
-import os
-from pathlib import Path
 from challenge.utils import FEATURES_COLS, load_the_pipe, get_feature_names
 from challenge.model import DelayModel
 from challenge.schemas import FlightsData
