@@ -113,6 +113,8 @@ pip install --upgrade fastapi starlette anyio
 ```
 After this all 4 tests passed.
 
+I created the artifact in artifacts registry en gcp, and updated the url in the Makefile to run the tests from the
+gcp instance.
 # Part III 🚀
 
 For the deployment I updated the [`Dockerfile`](../Dockerfile), and tested the API locally.
