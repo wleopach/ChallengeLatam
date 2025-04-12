@@ -179,3 +179,12 @@ files to the project. This workflows will activate when a push to main branch is
 
 I configured the workflows so that the  provided commands in the [`Makefile`](../Makefile) are used to test the 
 deployment.
+
+By default the github actions runs with python3.12, so I had to explicitly use python 10 in the 
+[`ci-workflow`](../.github/workflows/ci.yml).
+```yaml
+- name: Set up Python
+  uses: actions/setup-python@v4
+  with:
+    python-version: '3.10'
+```
