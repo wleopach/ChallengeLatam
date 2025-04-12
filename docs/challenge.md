@@ -112,3 +112,53 @@ anyo versions. I did
 pip install --upgrade fastapi starlette anyio
 ```
 After this all 4 tests passed.
+
+# Part III 🚀
+
+For the deployment I updated the [`Dockerfile`](../Dockerfile), and tested the API locally.
+
+```bash
+  docker build -t challenge-api .
+  docker run -p 8080:8080 challenge-api
+  make stress-test
+```
+The first time I did the stress-test I got this error:
+```bash
+# change stress url to your deployed app 
+mkdir reports || true
+locust -f tests/stress/api_stress.py --print-stats --html reports/stress-test.html --run-time 60s --headless --users 100 --spawn-rate 1 -H http://127.0.0.1:8000 
+mkdir: cannot create directory ‘reports’: File exists
+Traceback (most recent call last):
+  File "/home/leonardo/PersonalProjects/ChallengeLatam/.venv/bin/locust", line 5, in <module>
+    from locust.main import main
+  File "/home/leonardo/PersonalProjects/ChallengeLatam/.venv/lib/python3.10/site-packages/locust/main.py", line 16, in <module>
+    from .env import Environment
+  File "/home/leonardo/PersonalProjects/ChallengeLatam/.venv/lib/python3.10/site-packages/locust/env.py", line 5, in <module>
+    from .web import WebUI
+  File "/home/leonardo/PersonalProjects/ChallengeLatam/.venv/lib/python3.10/site-packages/locust/web.py", line 14, in <module>
+    from flask import Flask, make_response, jsonify, render_template, request, send_file
+  File "/home/leonardo/PersonalProjects/ChallengeLatam/.venv/lib/python3.10/site-packages/flask/__init__.py", line 14, in <module>
+    from jinja2 import escape
+ImportError: cannot import name 'escape' from 'jinja2' (/home/leonardo/PersonalProjects/ChallengeLatam/.venv/lib/python3.10/site-packages/jinja2/__init__.py)
+make: *** [Makefile:29: stress-test] Error 1
+
+```
+After doing some research I found that updating locust was enough to resolve the issue:
+```bash
+  pip install --upgrade locust
+```
+
+In order to test the api locally I changed the STRESS_URL =  http://0.0.0.0:8080 [`Makefile`](../Makefile)  and passed
+all the tests:
+
+```bash
+
+
+Response time percentiles (approximated)
+Type     Name                                                                                  50%    66%    75%    80%    90%    95%    98%    99%  99.9% 99.99%   100% # reqs
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+POST     /predict                                                                             2300   3500   4200   4600   5100   5600   6900   8100  11000  11000  11000    604
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+         Aggregated                                                                           2300   3500   4200   4600   5100   5600   6900   8100  11000  11000  11000    604
+
+```
