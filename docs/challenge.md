@@ -1,24 +1,26 @@
-# Environment preparation
- In order to install the libraries provided I created a virtual env with python 3.10 then I ran the 
+# Project Implementation Documentation
+
+## Environment Setup
+To install the required libraries, I created a Python 3.10 virtual environment and executed:
 ```bash
-    make install
+make install
 ```
 
-# Part I
+## Part I: Data Exploration and Model Development
 
-With the dependencies installed I proceeded to run the exploration [`notebook`](../challenge/exploration.ipynb). 
-I found a problem with the bar plots, without x and y specified there was an issue.
-```python
-sns.barplot(x=flights_by_airline.index, y =flights_by_airline.values , alpha=0.9)
+After installing dependencies, I ran the [exploration notebook](../challenge/exploration.ipynb) and identified several issues:
 
-```
-Since the xgboost was not added at the end of the [`requirements`](../requirements.txt), and ran
-```bash
-   make install 
-```
-again.
+1. The bar plots were not rendering correctly due to missing x and y specifications. I fixed this with:
+   ```python
+   sns.barplot(x=flights_by_airline.index, y=flights_by_airline.values, alpha=0.9)
+   ```
 
-## 🔍 Model Comparison Summary
+2. XGBoost was missing from the [requirements](../requirements.txt) file. I added it and ran:
+   ```bash
+   make install
+   ```
+
+### Model Comparison Analysis
 
 | Metric              | Model 1 | Model 2 | Model 3 | Model 4 | Model 5 | Model 6 | Model 7 |
 |---------------------|---------|---------|---------|---------|---------|---------|---------|
@@ -28,184 +30,156 @@ again.
 | Precision (Class 1) | 0       | 0.56    | 0.25    | 0.76    | 0.25    | 0.53    | 0.53    |
 | Recall (Class 1)    | 0       | 0.03    | 0.69    | 0.01    | 0.69    | 0.01    | 0.01    |
 | F1 Score (Class 1)  | 0       | 0.06    | 0.37    | 0.01    | 0.36    | 0.03    | 0.03    |
-| accuracy            | 0.81    | 0.81    | 0.55    | 0.81    | 0.55    | 0.81    | 0.81    |
+| Accuracy            | 0.81    | 0.81    | 0.55    | 0.81    | 0.55    | 0.81    | 0.81    |
 
-Since we want to detect delayed flights, recall and F1-score are critical, in the following table
-the models are ordered according to this metrics: 
+Since our primary objective is to detect delayed flights, recall and F1-score for Class 1 are critical metrics. Below is a ranking of models based on these criteria:
 
-| Model | F1 Score (Class 1) | Recall (Class 1) | Precision (Class 1) | Accuracy |
-|-------|--------------------|------------------|----------------------|----------|
-| Model 3 | 0.37             | 0.69             | 0.25                 | 0.55     |
-| Model 5 | 0.36             | 0.69             | 0.25                 | 0.55     |
-| Model 2 | 0.06             | 0.03             | 0.56                 | 0.81     |
-| Model 6 | 0.03             | 0.01             | 0.53                 | 0.81     |
-| Model 7 | 0.03             | 0.01             | 0.53                 | 0.81     |
-| Model 4 | 0.01             | 0.01             | 0.76                 | 0.81     |
-| Model 1 | 0.00             | 0.00             | 0.00                 | 0.81     |
+| Model   | F1 Score (Class 1) | Recall (Class 1) | Precision (Class 1) | Accuracy |
+|---------|--------------------|-----------------:|--------------------:|----------|
+| Model 3 | 0.37               | 0.69             | 0.25                | 0.55     |
+| Model 5 | 0.36               | 0.69             | 0.25                | 0.55     |
+| Model 2 | 0.06               | 0.03             | 0.56                | 0.81     |
+| Model 6 | 0.03               | 0.01             | 0.53                | 0.81     |
+| Model 7 | 0.03               | 0.01             | 0.53                | 0.81     |
+| Model 4 | 0.01               | 0.01             | 0.76                | 0.81     |
+| Model 1 | 0.00               | 0.00             | 0.00                | 0.81     |
 
-The model that better detects delayed flights is Model 3, this corresponds to:
+Model 3 demonstrated the best performance for detecting delayed flights, which corresponds to:
 ```python
-xgb_model_2 = xgb.XGBClassifier(random_state=1, learning_rate=0.01, scale_pos_weight = scale)
+xgb_model_2 = xgb.XGBClassifier(random_state=1, learning_rate=0.01, scale_pos_weight=scale)
 ```
-I will use this model for the deployment.
+I selected this model for deployment.
 
-## Model transcription 📝
+## Model Implementation
 
-The IDE highlighted this in red,
+### Code Fixes
+The IDE flagged an issue with type annotations:
 ```python
 Union(Tuple[pd.DataFrame, pd.DataFrame], pd.DataFrame)
 ```
-I changed to square brackets as suggested
+
+I corrected it using square brackets as recommended:
 ```python
 Union[Tuple[pd.DataFrame, pd.DataFrame], pd.DataFrame]
 ```
-### Helper functions
-I created a [`helper`](../challenge/utils.py) file with functions to store some methods and classes,
-I used the functions from the [`notebook`](../challenge/exploration.ipynb) with documentation:
+
+### Helper Functions
+I created a [helper file](../challenge/utils.py) to organize methods and classes with proper documentation:
 ```python
 get_period_day(date)
 get_min_diff(data)
 is_high_season(fecha)
-``` 
-I added a sklearn pipeline to transform the columns, and a [`model`](../model) folder where the fitted pipeline is going to be stored,
-and the fitted model as well.
-
-When executing 
-```bash
- make model-test
 ```
-for the first time I got this error,
+
+I also implemented a scikit-learn pipeline to transform columns and created a [model directory](../model) to store the fitted pipeline and model.
+
+When running the model tests for the first time:
 ```bash
+make model-test
+```
+
+I encountered file path errors:
+```
 FAILED tests/model/test_model.py::TestModel::test_model_fit - FileNotFoundError: [Errno 2] No such file or directory: '../data/data.csv'
-FAILED tests/model/test_model.py::TestModel::test_model_predict - FileNotFoundError: [Errno 2] No such file or directory: '../data/data.csv'
-FAILED tests/model/test_model.py::TestModel::test_model_preprocess_for_serving - FileNotFoundError: [Errno 2] No such file or directory: '../data/data.csv'
-FAILED tests/model/test_model.py::TestModel::test_model_preprocess_for_training - FileNotFoundError: [Errno 2] No such file or directory: '../data/data.csv'
-
 ```
-In order to solve this issue I added the DATA_PATH variable at the beginning of the  [`test_model`](../tests/model/test_model.py)
-and then read the data using:
+
+To resolve this, I added a DATA_PATH variable at the beginning of [test_model.py](../tests/model/test_model.py) and updated the data loading:
 ```python
 self.data = pd.read_csv(filepath_or_buffer=f"{DATA_PATH}")
 ```
 
-# Part II 🧨
+## Part II: API Development
 
-In order to deploy the model using fastapi I created a [`schemas`](../challenge/schemas.py) file to define the 
-response and requests models. I updated the predict endpoint in [`api`](../challenge/api.py). 
-The first time that I ran
+For the model deployment with FastAPI, I created a [schemas file](../challenge/schemas.py) to define request and response models, and updated the predict endpoint in the [API file](../challenge/api.py).
+
+Initial test execution with:
 ```bash
- make api-test
+make api-test
 ```
-I got the following errors:
-```bash
-=================================================================================================== short test summary info ===================================================================================================
+
+Revealed compatibility issues:
+```
 FAILED tests/api/test_api.py::TestBatchPipeline::test_should_failed_unkown_column_1 - AttributeError: module 'anyio' has no attribute 'start_blocking_portal'
-FAILED tests/api/test_api.py::TestBatchPipeline::test_should_failed_unkown_column_2 - AttributeError: module 'anyio' has no attribute 'start_blocking_portal'
-FAILED tests/api/test_api.py::TestBatchPipeline::test_should_failed_unkown_column_3 - AttributeError: module 'anyio' has no attribute 'start_blocking_portal'
-FAILED tests/api/test_api.py::TestBatchPipeline::test_should_get_predict - AttributeError: module 'anyio' has no attribute 'start_blocking_portal'
-
 ```
-After doing some research I found that the issue could be solved by doing an update of the fastapi, startlette and
-anyo versions. I did
 
+After research, I resolved this by updating the FastAPI dependencies:
 ```bash
 pip install --upgrade fastapi starlette anyio
 ```
-After this all 4 tests passed.
 
-I created the artifact in artifacts registry en gcp, and updated the url in the Makefile to run the tests from the
-gcp instance.
-# Part III 🚀
+Subsequently, all four tests passed successfully. I then created the artifact in GCP's Artifact Registry and updated the URL in the Makefile to run tests from the GCP instance.
 
-For the deployment I updated the [`Dockerfile`](../Dockerfile), and tested the API locally.
+## Part III: Containerization and Deployment
 
+I updated the [Dockerfile](../Dockerfile) and tested the API locally:
 ```bash
-  docker build -t challenge-api .
-  docker run -p 8080:8080 challenge-api
-  make stress-test
-```
-The first time I did the stress-test I got this error:
-```bash
-# change stress url to your deployed app 
-mkdir reports || true
-locust -f tests/stress/api_stress.py --print-stats --html reports/stress-test.html --run-time 60s --headless --users 100 --spawn-rate 1 -H http://127.0.0.1:8000 
-mkdir: cannot create directory ‘reports’: File exists
-Traceback (most recent call last):
-  File "/home/leonardo/PersonalProjects/ChallengeLatam/.venv/bin/locust", line 5, in <module>
-    from locust.main import main
-  File "/home/leonardo/PersonalProjects/ChallengeLatam/.venv/lib/python3.10/site-packages/locust/main.py", line 16, in <module>
-    from .env import Environment
-  File "/home/leonardo/PersonalProjects/ChallengeLatam/.venv/lib/python3.10/site-packages/locust/env.py", line 5, in <module>
-    from .web import WebUI
-  File "/home/leonardo/PersonalProjects/ChallengeLatam/.venv/lib/python3.10/site-packages/locust/web.py", line 14, in <module>
-    from flask import Flask, make_response, jsonify, render_template, request, send_file
-  File "/home/leonardo/PersonalProjects/ChallengeLatam/.venv/lib/python3.10/site-packages/flask/__init__.py", line 14, in <module>
-    from jinja2 import escape
-ImportError: cannot import name 'escape' from 'jinja2' (/home/leonardo/PersonalProjects/ChallengeLatam/.venv/lib/python3.10/site-packages/jinja2/__init__.py)
-make: *** [Makefile:29: stress-test] Error 1
-
-```
-After doing some research I found that updating locust was enough to resolve the issue:
-```bash
-  pip install --upgrade locust
+docker build -t challenge-api .
+docker run -p 8080:8080 challenge-api
+make stress-test
 ```
 
-In order to test the api locally I changed the STRESS_URL =  http://0.0.0.0:8080 [`Makefile`](../Makefile)  and passed
-all the tests:
+The initial stress test failed with:
+```
+ImportError: cannot import name 'escape' from 'jinja2'
+```
 
+I resolved this by upgrading Locust:
 ```bash
+pip install --upgrade locust
+```
 
+For local API testing, I modified the `STRESS_URL = http://0.0.0.0:8080` in the [Makefile](../Makefile) and successfully passed all tests:
 
+```
 Response time percentiles (approximated)
-Type     Name                                                                                  50%    66%    75%    80%    90%    95%    98%    99%  99.9% 99.99%   100% # reqs
---------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
-POST     /predict                                                                             2300   3500   4200   4600   5100   5600   6900   8100  11000  11000  11000    604
---------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
-         Aggregated                                                                           2300   3500   4200   4600   5100   5600   6900   8100  11000  11000  11000    604
-
+Type     Name                                                            50%    66%    75%    80%    90%    95%    98%    99%  99.9% 99.99%   100% # reqs
+--------|---------------------------------------------------------------|------|------|------|------|------|------|------|------|------|------|------|------
+POST     /predict                                                        2300   3500   4200   4600   5100   5600   6900   8100  11000  11000  11000    604
+--------|---------------------------------------------------------------|------|------|------|------|------|------|------|------|------|------|------|------
+         Aggregated                                                      2300   3500   4200   4600   5100   5600   6900   8100  11000  11000  11000    604
 ```
 
-# Part IV ❄
+## Part IV: CI/CD Implementation
 
-I created the folder .github and copied the workflows folder inside it.
+I created the GitHub Actions workflow structure:
 ```bash
-    mkdir .github
-    cp -r workflows .github
+mkdir .github
+cp -r workflows .github
 ```
 
-I used  GCP for the project deployment, I created a new key to a project on GCP 
-and added the JSON to github secrets as GCP_CREDENTIALS.
+For deployment, I set up a GCP project, created a new service account key, and added the JSON to GitHub Secrets as `GCP_CREDENTIALS`.
 
-In the  [`workflows`](../.github/workflows) folder I updated the cd.yml and ci.yml, and added the
-files to the project. This workflows will activate when a push to main branch is executed.
+In the [workflows folder](../.github/workflows), I updated the CI/CD configuration files to leverage the commands provided in the [Makefile](../Makefile) for testing the deployment. The workflows are configured to trigger when changes are pushed to the main branch.
 
-I configured the workflows so that the  provided commands in the [`Makefile`](../Makefile) are used to test the 
-deployment.
-
-By default the github actions runs with python3.12, so I had to explicitly use python 10 in the 
-[`ci-workflow`](../.github/workflows/ci.yml).
+Since GitHub Actions defaults to Python 3.12, I explicitly specified Python 3.10 in the [CI workflow file](../.github/workflows/ci.yml):
 ```yaml
 - name: Set up Python
   uses: actions/setup-python@v4
   with:
     python-version: '3.10'
 ```
-
-## Numpy dependency issue
-
-When runing the github ci-workflow one dependency issue emerged:
+There was an issue when running the tests from the GCP instance, the error suggest
+I should install httpx, I added it to the [test requirements](../requirements-test.txt).
 ```bash
- contourpy 1.3.1 requires numpy>=1.23, but you have numpy 1.22.4 which is incompatible.
+  
+  raise RuntimeError(
+E   RuntimeError: The starlette.testclient module requires the httpx package to be installed.
+E   You can install this with:
+E       $ pip install httpx
 ```
-In orther to solve this I changed the [`requiremments`](../requirements.txt) 
-```text
+### Dependency Resolution
+During the CI workflow execution, I encountered a NumPy version incompatibility:
+```
+contourpy 1.3.1 requires numpy>=1.23, but you have numpy 1.22.4 which is incompatible.
+```
+
+I resolved this by updating the [requirements file](../requirements.txt):
+```
 numpy~=1.23
 ```
 
-
-
-## Github DAG 
-```bash
+### Git Workflow Visualization
+```
 *   bd7eee3 (HEAD -> feature/github-log, origin/dev, dev) Merge tag '0.5.0' into dev
 |\  
 | *   d507828 (tag: 0.5.0, origin/main, main) Merge branch 'release/0.5.0'
@@ -237,6 +211,4 @@ numpy~=1.23
 | *   24d2843 (tag: 0.2.0) Merge branch 'release/0.2.0'
 | |\  
 | |/  
-
 ```
-
