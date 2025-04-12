@@ -189,6 +189,19 @@ By default the github actions runs with python3.12, so I had to explicitly use p
     python-version: '3.10'
 ```
 
+## Numpy dependency issue
+
+When runing the github ci-workflow one dependency issue emerged:
+```bash
+ contourpy 1.3.1 requires numpy>=1.23, but you have numpy 1.22.4 which is incompatible.
+```
+In orther to solve this I changed the [`requiremments`](../requirements.txt) 
+```text
+numpy~=1.23
+```
+
+
+
 ## Github DAG 
 ```bash
 *   bd7eee3 (HEAD -> feature/github-log, origin/dev, dev) Merge tag '0.5.0' into dev
@@ -224,3 +237,4 @@ By default the github actions runs with python3.12, so I had to explicitly use p
 | |/  
 
 ```
+
