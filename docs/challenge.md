@@ -188,3 +188,39 @@ By default the github actions runs with python3.12, so I had to explicitly use p
   with:
     python-version: '3.10'
 ```
+
+## Github DAG 
+```bash
+*   bd7eee3 (HEAD -> feature/github-log, origin/dev, dev) Merge tag '0.5.0' into dev
+|\  
+| *   d507828 (tag: 0.5.0, origin/main, main) Merge branch 'release/0.5.0'
+| |\  
+| |/  
+|/|   
+* | d05aecb seting python 3.10 as python interpreter in the ci workflow
+* | da8cf02 Merge tag '0.4.0' into dev
+|\| 
+| *   4331a48 (tag: 0.4.0) Merge branch 'release/0.4.0'
+| |\  
+| |/  
+|/|   
+* | fbb5170 adding cd and ci workflows
+* | 1ef3a26 Merge tag '0.3.0' into dev
+|\| 
+| *   0d55ce6 (tag: 0.3.0) Merge branch 'release/0.3.0'
+| |\  
+| |/  
+|/|   
+* |   5b7c568 Merge branch 'feature/partIII' into dev
+|\ \  
+| * | 5c87d52 Updating locust to test the the api locally
+| * | 26e2c8e Updating Dockerfile for deployment
+| * | dd53ba7 starting part 3
+|/ /  
+* | f9981d1 Merge tag '0.2.0' into dev
+|\| 
+| *   24d2843 (tag: 0.2.0) Merge branch 'release/0.2.0'
+| |\  
+| |/  
+
+```
