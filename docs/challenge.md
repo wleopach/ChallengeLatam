@@ -162,3 +162,20 @@ POST     /predict                                                               
          Aggregated                                                                           2300   3500   4200   4600   5100   5600   6900   8100  11000  11000  11000    604
 
 ```
+
+# Part IV ❄
+
+I created the folder .github and copied the workflows folder inside it.
+```bash
+    mkdir .github
+    cp -r workflows .github
+```
+
+I used  GCP for the project deployment, I created a new key to a project on GCP 
+and added the JSON to github secrets as GCP_CREDENTIALS.
+
+In the  [`workflows`](../.github/workflows) folder I updated the cd.yml and ci.yml, and added the
+files to the project. This workflows will activate when a push to main branch is executed.
+
+I configured the workflows so that the  provided commands in the [`Makefile`](../Makefile) are used to test the 
+deployment.
