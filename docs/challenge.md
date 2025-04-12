@@ -114,3 +114,5 @@ pip install --upgrade fastapi starlette anyio
 After this all 4 tests passed.
 
 # Part III 🚀
+
+For the deployment I updated the [`Dockerfile`](../Dockerfile)
