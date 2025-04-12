@@ -212,3 +212,5 @@ numpy~=1.23
 | |\  
 | |/  
 ```
+# Sending the Challenge
+I created a [python script](../send.py) to send the challenge.
