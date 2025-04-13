@@ -180,37 +180,82 @@ numpy~=1.23
 
 ### Git Workflow Visualization
 ```
-*   bd7eee3 (HEAD -> feature/github-log, origin/dev, dev) Merge tag '0.5.0' into dev
+* 93a2e8e (HEAD -> dev) updating docs and api to solve cors issue
+*   56cdebf (origin/dev) Merge tag '0.5.5' into dev
 |\  
-| *   d507828 (tag: 0.5.0, origin/main, main) Merge branch 'release/0.5.0'
+| *   08127dc (tag: 0.5.5, origin/main, main) Merge branch 'release/0.5.5'
 | |\  
 | |/  
 |/|   
-* | d05aecb seting python 3.10 as python interpreter in the ci workflow
-* | da8cf02 Merge tag '0.4.0' into dev
+* | 8db5f56 updating url
+* | 81c0685 Merge tag '0.5.4' into dev
 |\| 
-| *   4331a48 (tag: 0.4.0) Merge branch 'release/0.4.0'
+| *   efd56ee (tag: 0.5.4) Merge branch 'release/0.5.4'
+| |\  
+:...skipping...
+* 93a2e8e (HEAD -> dev) updating docs and api to solve cors issue
+*   56cdebf (origin/dev) Merge tag '0.5.5' into dev
+|\  
+| *   08127dc (tag: 0.5.5, origin/main, main) Merge branch 'release/0.5.5'
 | |\  
 | |/  
 |/|   
-* | fbb5170 adding cd and ci workflows
-* | 1ef3a26 Merge tag '0.3.0' into dev
+* | 8db5f56 updating url
+* | 81c0685 Merge tag '0.5.4' into dev
 |\| 
-| *   0d55ce6 (tag: 0.3.0) Merge branch 'release/0.3.0'
+| *   efd56ee (tag: 0.5.4) Merge branch 'release/0.5.4'
 | |\  
 | |/  
 |/|   
-* |   5b7c568 Merge branch 'feature/partIII' into dev
-|\ \  
-| * | 5c87d52 Updating locust to test the the api locally
-| * | 26e2c8e Updating Dockerfile for deployment
-| * | dd53ba7 starting part 3
-|/ /  
-* | f9981d1 Merge tag '0.2.0' into dev
+* | 054ce55 updating url
+* | 9863d1e Merge tag '0.5.3' into dev
 |\| 
-| *   24d2843 (tag: 0.2.0) Merge branch 'release/0.2.0'
+| *   0e1f423 (tag: 0.5.3) Merge branch 'release/0.5.3'
 | |\  
 | |/  
+|/|   
+* | 4028554 updating url
+* | 2314ea2 Merge tag '0.5.2' into dev
+|\| 
+| *   ede489e (tag: 0.5.2) Merge branch 'release/0.5.2'
+:...skipping...
+* 93a2e8e (HEAD -> dev) updating docs and api to solve cors issue
+*   56cdebf (origin/dev) Merge tag '0.5.5' into dev
+|\  
+| *   08127dc (tag: 0.5.5, origin/main, main) Merge branch 'release/0.5.5'
+| |\  
+| |/  
+|/|   
+* | 8db5f56 updating url
+* | 81c0685 Merge tag '0.5.4' into dev
+|\| 
+| *   efd56ee (tag: 0.5.4) Merge branch 'release/0.5.4'
+| |\  
+| |/  
+|/|   
+* | 054ce55 updating url
+* | 9863d1e Merge tag '0.5.3' into dev
+|\| 
+| *   0e1f423 (tag: 0.5.3) Merge branch 'release/0.5.3'
+| |\  
+| |/  
+|/|   
+* | 4028554 updating url
+* | 2314ea2 Merge tag '0.5.2' into dev
+|\| 
+| *   ede489e (tag: 0.5.2) Merge branch 'release/0.5.2'
+| |\  
+| |/  
+|/|   
+| | * 8fee4bc (refs/stash) WIP on dev: 482e28a solving numpy dependency issue
+| |/| 
+|/| | 
+| | * 3e3f91b index on dev: 482e28a solving numpy dependency issue
+| |/  
+|/|   
+* | 482e28a solving numpy dependency issue
+* | 070a5ff Merge tag '0.5.1' into dev
+
 ```
 # Sending the Challenge
 I created a [python script](../send.py) to send the challenge
