@@ -213,4 +213,18 @@ numpy~=1.23
 | |/  
 ```
 # Sending the Challenge
-I created a [python script](../send.py) to send the challenge.
+I created a [python script](../send.py) to send the challenge
+
+```bash
+
+python send.py
+Status Code: 200
+Response Text: {"status":"OK","detail":"your request was received"}
+Success: The response matches the expected result.
+
+```
+
+# Conecting with front application
+
+In order to connect the api with the front application that I made for the challenge I updated the
+[api](../challenge/api.py). 

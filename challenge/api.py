@@ -3,9 +3,31 @@ import pandas as pd
 from challenge.utils import FEATURES_COLS, load_the_pipe, get_feature_names
 from challenge.model import DelayModel
 from challenge.schemas import FlightsData
-
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+from fastapi import Request
 app = fastapi.FastAPI()
 
+# Allow requests from your frontend
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # You can also use ["*"] to allow all
+    allow_credentials=True,
+    allow_methods=["*"],                      # Or be specific: ["POST", "GET"]
+    allow_headers=["*"],                      # Or be specific: ["Content-Type", "Authorization"]
+)
+
+@app.options("/predict")
+async def options_predict(request: Request):
+    return JSONResponse(
+        status_code=200,
+        content={"message": "CORS preflight OK"},
+        headers={
+            "Access-Control-Allow-Origin": "*",  # or specify http://localhost:5173
+            "Access-Control-Allow-Methods": "POST, OPTIONS",
+            "Access-Control-Allow-Headers": "Content-Type, Authorization",
+        },
+    )
 @app.get("/health", status_code=200)
 async def get_health() -> dict:
     return {
