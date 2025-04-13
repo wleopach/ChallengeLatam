@@ -178,7 +178,7 @@ I resolved this by updating the [requirements file](../requirements.txt):
 numpy~=1.23
 ```
 
-### Git Workflow Visualization
+### Git Graph Visualization
 ```
 * 93a2e8e (HEAD -> dev) updating docs and api to solve cors issue
 *   56cdebf (origin/dev) Merge tag '0.5.5' into dev
@@ -273,3 +273,5 @@ Success: The response matches the expected result.
 
 In order to connect the api with the front application that I made for the challenge I updated the
 [api](../challenge/api.py). 
+
+The url of the app tha I created to interact with the api is [url](https://wleopach.github.io/frontChallenge/).
